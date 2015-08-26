@@ -1,9 +1,13 @@
 <?php
     class Copy
     {
+        //a number that indicates how many copies of a book exist in the library
         private $copies;
+        //a number that indicates how many copies are not checked out.
         private $available;
+        //the id of a row in the books table
         private $book_id;
+        //the copy id 
         private $id;
 
         function __construct($copies, $available, $book_id, $id=null)
@@ -31,7 +35,27 @@
 
         function getCopies()
         {
-            return 
+            return $this->copies;
+        }
+
+        function getAvailable()
+        {
+            return $this->available;
+        }
+
+        function getBookId()
+        {
+            return $this->book_id;
+        }
+
+        function getId()
+        {
+            return $this->id;
+        }
+
+        function save()
+        {
+            $GLOBALS['DB']->exec("INSERT INTO copies (copies, available, book_id) VALUES ({$this->getCopies()}, {$this->getAvailable()}, {$this->getBookId()});");
         }
     }
 ?>
