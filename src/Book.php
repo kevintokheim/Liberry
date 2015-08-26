@@ -102,5 +102,22 @@
             }
             return $authors;
         }
+
+        function addCopy($number_copies)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO copies (number_copies, available, book_id) VALUES ({$number_copies}, {$number_copies}, {$this->getId()});");
+        }
+
+        function getCopy()
+        {
+            $query = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id={$this->getId()};");
+            $returned_copy = $query->fetchAll(PDO::FETCH_ASSOC);
+            $number_copies = $returned_copy[0]['number_copies'];
+            $available = $returned_copy[0]['available'];
+            $book_id = $returned_copy[0]['book_id'];
+            $id = $returned_copy[0]['id'];
+            $copy = new Copy($number_copies, $available, $book_id, $id);
+            return $copy;
+        }
     }
 ?>
