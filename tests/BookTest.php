@@ -231,5 +231,28 @@
             //Assert
             $this->assertEquals($test_copy, $result);
         }
+
+        function test_getCopy()
+        {
+            //Arrange
+            $title = "Revenge of the Martians";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Star Wars";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            $number_copies = 4;
+            $test_book->addCopy($number_copies);
+
+            //Act
+            $test_copy = $test_book->getCopy();
+            $result = Copy::getAll();
+
+
+            //Assert
+            $this->assertEquals([$test_copy], $result);
+        }
     }
 ?>
