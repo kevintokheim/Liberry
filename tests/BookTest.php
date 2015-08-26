@@ -187,5 +187,24 @@
             //Assert
             $this->assertEquals($test_book2, $result);
         }
+
+        function test_delete()
+        {
+            //Arrange
+            $title = "Revenge of the Martians";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Star Wars";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            //Act
+            $test_book->delete();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$test_book2], $result);
+        }
     }
 ?>

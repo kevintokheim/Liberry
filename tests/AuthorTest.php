@@ -154,6 +154,66 @@
             //Assert
             $this->assertEquals([$test_book], $result);
         }
+
+        function test_updateName()
+        {
+            //Arrange
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Roberto Bolano";
+            $test_author->updateName($name2);
+
+            $id = $test_author->getId();
+            $test_author2 = new Author($name2, $id);
+
+            //Act
+            $result = Author::find($id);
+
+            //Assert
+            $this->assertEquals($test_author2, $result);
+        }
+
+        function test_update()
+        {
+            //Arrange
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Roberto Bolano";
+            $test_author->updateName($name2);
+
+            $id = $test_author->getId();
+            $test_author2 = new Author($name2, $id);
+
+            //Act
+            $result = Author::find($id);
+
+            //Assert
+            $this->assertEquals($test_author2, $result);
+        }
+
+        function test_delete()
+        {
+            //Arrange
+            $name = "Stephen King";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Clive Barker";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
+
+            //Act
+            $test_author->delete();
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([$test_author2], $result);
+        }
+
     }
 
 
