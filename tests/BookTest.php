@@ -5,7 +5,7 @@
     */
 
     require_once "src/Book.php";
-    // require_once "src/Author.php";
+    require_once "src/Author.php";
 
     $server = 'mysql:host=localhost;dbname=library_test';
     $username = 'root';
@@ -17,7 +17,7 @@
         protected function tearDown()
         {
             Book::deleteAll();
-            //Author::deleteAll();
+            Author::deleteAll();
         }
 
         function test_getTitle()
@@ -111,6 +111,43 @@
 
             //Assert
             $this->assertEquals([], $result);
+        }
+
+        function test_find()
+        {
+            //Arrange
+            $title = "Adventures on Mars";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Adventures on Mars 2 Adventure Harder";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            //Act
+            $result = Book::find($test_book->getId());
+
+            //Assert
+            $this->assertEquals($test_book, $result);
+        }
+
+        function test_addAuthor()
+        {
+            //Arrange
+            $title = "Adventures on Mars";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            //Act
+            $test_book->addAuthor($test_author);
+            $result = $test_book->getAuthors();
+
+            //Assert
+            $this->assertEquals([$test_author], $result);
         }
     }
 ?>

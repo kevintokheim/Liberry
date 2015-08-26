@@ -48,5 +48,41 @@
         {
             $GLOBALS['DB']->exec("DELETE FROM books;");
         }
+
+        static function find($search_id)
+        {
+            $found_book = null;
+            $books = Book::getAll();
+            foreach($books as $book){
+                $book_id = $book->getId();
+                if($book_id == $search_id){
+                    $found_book = $book;
+                }
+            }
+            return $found_book;
+        }
+
+        function addAuthor($author)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$author->getId()});");
+        }
+
+        function getAuthors()
+        {
+            $query = $GLOBALS['DB']->query("SELECT authors.* FROM
+            books JOIN books_authors ON (books.id = books_authors.book_id)
+                  JOIN authors ON (books_authors.author_id = authors.id)
+            WHERE books.id = {$this->getId()};");
+            $returned_authors = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $authors = [];
+            foreach($returned_authors as $author){
+                $name = $author['name'];
+                $id = $author['id'];
+                $new_author = new Author($name, $id);
+                array_push($authors, $new_author);
+            }
+            return $authors;
+        }
     }
 ?>

@@ -113,7 +113,58 @@
             //Assert
             $this->assertEquals([], $result);
         }
+
+        function test_find()
+        {
+            //Arrange
+            $name = "Stephen King";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Clive Barker";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
+
+            //Act
+            $result = Author::find($test_author->getId());
+
+            //Assert
+            $this->assertEquals($test_author, $result);
+        }
+
+        function test_addBook()
+        {
+            //Arrange
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Roberto Bolano";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
+
+            $title = "Infinite Jest";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            //Act
+            $test_author->addBook($test_book);
+            $result = $test_author->getBooks();
+
+            //Assert
+            $this->assertEquals([$test_book], $result);
+        }
     }
+
+
+
+
+
+
+
+
+
+
 
 
 ?>
