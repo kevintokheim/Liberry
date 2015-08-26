@@ -103,6 +103,7 @@
             return $authors;
         }
 
+        //inserts new copy record into the copies database
         function addCopy($number_copies)
         {
             $GLOBALS['DB']->exec("INSERT INTO copies (number_copies, available, book_id) VALUES ({$number_copies}, {$number_copies}, {$this->getId()});");

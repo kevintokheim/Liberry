@@ -4,6 +4,9 @@
 
 #### Ian McKenney & Kevin Tokheim
 
+## Status
+No silex has been started yet. Full CRUD for Book, Author, and Copy has been written and passes tests.  Getting Authors from Books has been written and passes tests.  Inserting a Copy from a Book has been written and passes tests.  Please see [library_database_design.png](library_database_design.png).
+
 ## Description
 
 This application will a user to maintain a database of a library that also sells berries.
