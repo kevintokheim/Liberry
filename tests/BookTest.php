@@ -149,5 +149,43 @@
             //Assert
             $this->assertEquals([$test_author], $result);
         }
+
+        function test_updateTitle()
+        {
+            //Arrange
+            $title = "Revenge of the Martians";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Star Wars";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            //Act
+            $test_book2->updateTitle($title);
+            $result = Book::find($test_book2->getId());
+
+            //Assert
+            $this->assertEquals($test_book->getTitle(), $result->getTitle());
+        }
+
+        function test_update()
+        {
+            //Arrange
+            $title = "The Martian";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Star Wars";
+            $test_book->update($title2);
+
+            //Act
+            $id = $test_book->getId();
+            $test_book2 = new Book($title2, $id);
+            $result = Book::find($id);
+
+            //Assert
+            $this->assertEquals($test_book2, $result);
+        }
     }
 ?>

@@ -31,6 +31,22 @@
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function updateTitle($new_title)
+        {
+            $GLOBALS['DB']->exec("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
+            $this->title = $new_title;
+        }
+
+        function update($new_title)
+        {
+            $this->updateTitle($new_title);
+        }
+
+        function delete()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
+        }
+
         static function getAll()
         {
             $returned_books = $GLOBALS['DB']->query("SELECT * FROM books ORDER BY title;");
@@ -47,6 +63,7 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM books;");
+            $GLOBALS['DB']->exec("DELETE FROM books_authors;");
         }
 
         static function find($search_id)

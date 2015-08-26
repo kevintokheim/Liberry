@@ -47,6 +47,7 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM authors;");
+            $GLOBALS['DB']->exec("DELETE FROM books_authors;");
         }
 
 
