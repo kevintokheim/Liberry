@@ -99,8 +99,14 @@
             $all_authors = Author::getAll();
             foreach($all_authors as $author){
                 $author_name = strtolower($author->getName());
+                // var_dump($author_name);
+                // var_dump($lower_search_author);
                 if($author_name == $lower_search_author){
-                    $found_books = $author->getBooks();
+                    $books_by_author = $author->getBooks();
+                    var_dump($books_by_author);
+                    foreach($books_by_author as $book){
+                        array_push($found_books, $book);
+                    }
                 }else{
                     return 0;
                 }

@@ -88,11 +88,10 @@
 
         function getBooks()
         {
-            $query = $GLOBALS['DB']->query("SELECT books.* FROM
+            $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM
             authors JOIN books_authors ON (authors.id = books_authors.author_id)
                     JOIN books ON (books_authors.book_id = books.id)
             WHERE authors.id = {$this->getId()};");
-            $returned_books = $query->fetchAll(PDO::FETCH_ASSOC);
 
             $books = [];
 

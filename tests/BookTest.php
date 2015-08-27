@@ -238,12 +238,12 @@
             $title = "Revenge of the Martians";
             $test_book = new Book($title);
             $test_book->save();
-            var_dump($test_book);
+
             $title2 = "Revenge of the Martians";
             $id = $test_book->getId();
             $test_book2 = new Book($title2, $id);
             $test_book2->save();
-            var_dump($test_book2);
+
             $title3 = "Star Wars";
             $test_book3 = new Book($title3);
             $test_book3->save();
@@ -287,11 +287,14 @@
             $test_author = new Author($name);
             $test_author->save();
 
+            $test_book->addAuthor($test_author);
+
             //Act
             $result = Book::findByAuthor("David Foster Wallace");
+            var_dump($result);
 
             //Assert
-            $this->assertEquals($test_book->getId(), $result);
+            $this->assertEquals($test_book, $result[0]);
         }
 
 

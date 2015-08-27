@@ -214,6 +214,29 @@
             $this->assertEquals([$test_author2], $result);
         }
 
+        function test_getBooks()
+        {
+            $name = "Roberto Bolano";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $title = "Infinite Jest";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Infinite Jest";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            //Act
+            $test_author->addBook($test_book2);
+            $test_author->addBook($test_book);
+            $result = $test_author->getBooks();
+
+            //Assert
+            $this->assertEquals([$test_book, $test_book2], $result);
+        }
+
     }
 
 
