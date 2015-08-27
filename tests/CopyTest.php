@@ -24,46 +24,13 @@
             //Patron::deleteAll();
         }
 
-        function test_setNumberCopies()
-        {
-            //Arrange
-            $number_copies = 5;
-            $available = 0;
-            $book_id = 1;
-            $test_copy = new Copy($number_copies, $available, $book_id);
-
-            $number_copies2 = 6;
-
-            //Act
-            $test_copy->setNumberCopies($number_copies2);
-            $result = $test_copy->getNumberCopies();
-
-            //Assert
-            $this->assertEquals($number_copies2, $result);
-        }
-
-        function test_getNumberCopies()
-        {
-            //Arrange
-            $number_copies = 5;
-            $available = 0;
-            $book_id = 1;
-            $test_copy = new Copy($number_copies, $available, $book_id);
-
-            //Act
-            $result = $test_copy->getNumberCopies();
-
-            //Assert
-            $this->assertEquals($number_copies, $result);
-        }
 
         function test_setBookId()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 1;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
 
             $book_id2 = 2;
 
@@ -78,10 +45,9 @@
         function test_getBookId()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 1;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
 
             //Act
             $result = $test_copy->getBookId();
@@ -93,12 +59,11 @@
         function test_setAvailable()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 1;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
 
-            $available2 = 1;
+            $available2 = false;
 
             //Act
             $test_copy->setAvailable($available2);
@@ -111,10 +76,9 @@
         function test_getAvailable()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
 
             //Act
             $result = $test_copy->getAvailable();
@@ -126,11 +90,10 @@
         function test_getId()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
             $id = 888;
-            $test_copy = new Copy($number_copies, $available, $book_id, $id);
+            $test_copy = new Copy($available, $book_id, $id);
 
             //Act
             $result = $test_copy->getId();
@@ -142,10 +105,9 @@
         function test_save()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
             //Act
@@ -158,16 +120,14 @@
         function test_getAll()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
-            $number_copies2 = 6;
             $available2 = 11;
             $book_id2 = 5;
-            $test_copy2 = new Copy($number_copies2, $available2, $book_id2);
+            $test_copy2 = new Copy($available2, $book_id2);
             $test_copy2->save();
 
             //Act
@@ -180,10 +140,9 @@
         function test_deleteAll()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
             //Act
@@ -197,16 +156,14 @@
         function test_find()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
-            $number_copies2 = 6;
             $available2 = 11;
             $book_id2 = 5;
-            $test_copy2 = new Copy($number_copies2, $available2, $book_id2);
+            $test_copy2 = new Copy($available2, $book_id2);
             $test_copy2->save();
 
             //Act
@@ -216,41 +173,36 @@
             $this->assertEquals($test_copy, $result);
         }
 
-        function test_update()
+        function test_updateAvailable()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
-            $number_copies2 = 6;
-            $available2 = 11;
-            $test_copy->update($number_copies2, $available2);
+            $test_copy->updateAvailable(false);
 
             //Act
-            $id = $test_copy->getId();
-            $test_copy2 = new Copy($number_copies2, $available2, $book_id, $id);
-            $result = Copy::find($id);
+            //$id = $test_copy->getId();
+            //$test_copy2 = new Copy($available2, $book_id, $id);
+            $result = $test_copy->getAvailable();
 
             //Assert
-            $this->assertEquals($test_copy2, $result);
+            $this->assertEquals(false, $result);
         }
 
         function test_delete()
         {
             //Arrange
-            $number_copies = 5;
-            $available = 0;
+            $available = true;
             $book_id = 4;
-            $test_copy = new Copy($number_copies, $available, $book_id);
+            $test_copy = new Copy($available, $book_id);
             $test_copy->save();
 
-            $number_copies2 = 6;
-            $available2 = 11;
+            $available2 = true;
             $book_id2 = 5;
-            $test_copy2 = new Copy($number_copies2, $available2, $book_id2);
+            $test_copy2 = new Copy($available2, $book_id2);
             $test_copy2->save();
 
             //Act

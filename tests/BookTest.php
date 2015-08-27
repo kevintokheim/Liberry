@@ -19,7 +19,7 @@
         {
             Book::deleteAll();
             Author::deleteAll();
-            Copy::deleteAll();
+            //Copy::deleteAll();
         }
 
         function test_getTitle()
@@ -171,24 +171,24 @@
             $this->assertEquals($test_book->getTitle(), $result->getTitle());
         }
 
-        function test_update()
-        {
-            //Arrange
-            $title = "The Martian";
-            $test_book = new Book($title);
-            $test_book->save();
-
-            $title2 = "Star Wars";
-            $test_book->update($title2);
-
-            //Act
-            $id = $test_book->getId();
-            $test_book2 = new Book($title2, $id);
-            $result = Book::find($id);
-
-            //Assert
-            $this->assertEquals($test_book2, $result);
-        }
+        // function test_update()
+        // {
+        //     //Arrange
+        //     $title = "The Martian";
+        //     $test_book = new Book($title);
+        //     $test_book->save();
+        //
+        //     $title2 = "Star Wars";
+        //     $test_book->update($title2);
+        //
+        //     //Act
+        //     $id = $test_book->getId();
+        //     $test_book2 = new Book($title2, $id);
+        //     $result = Book::find($id);
+        //
+        //     //Assert
+        //     $this->assertEquals($test_book2, $result);
+        // }
 
         function test_delete()
         {
@@ -209,50 +209,52 @@
             $this->assertEquals([$test_book2], $result);
         }
 
-        function test_addCopy()
+        // function test_addCopy()
+        // {
+        //     //Arrange
+        //     $title = "Revenge of the Martians";
+        //     $test_book = new Book($title);
+        //     $test_book->save();
+        //
+        //     $title2 = "Star Wars";
+        //     $test_book2 = new Book($title2);
+        //     $test_book2->save();
+        //
+        //     $number_copies = 4;
+        //     $test_book->addCopy($number_copies);
+        //
+        //     //Act
+        //     $test_copy = $test_book->getCopy();
+        //     $result = new Copy($number_copies, $number_copies, $test_book->getId(), $test_copy->getId());
+        //
+        //
+        //     //Assert
+        //     $this->assertEquals($test_copy, $result);
+        // }
+
+        function test_getNumberOfCopies()
         {
             //Arrange
             $title = "Revenge of the Martians";
             $test_book = new Book($title);
             $test_book->save();
-
-            $title2 = "Star Wars";
-            $test_book2 = new Book($title2);
+            var_dump($test_book);
+            $title2 = "Revenge of the Martians";
+            $id = $test_book->getId();
+            $test_book2 = new Book($title2, $id);
             $test_book2->save();
+            var_dump($test_book2);
+            $title3 = "Star Wars";
+            $test_book3 = new Book($title3);
+            $test_book3->save();
 
-            $number_copies = 4;
-            $test_book->addCopy($number_copies);
+            //$test_book->addCopy($number_copies);
 
             //Act
-            $test_copy = $test_book->getCopy();
-            $result = new Copy($number_copies, $number_copies, $test_book->getId(), $test_copy->getId());
-
+            $result = $test_book->getNumberOfCopies();
 
             //Assert
-            $this->assertEquals($test_copy, $result);
-        }
-
-        function test_getCopy()
-        {
-            //Arrange
-            $title = "Revenge of the Martians";
-            $test_book = new Book($title);
-            $test_book->save();
-
-            $title2 = "Star Wars";
-            $test_book2 = new Book($title2);
-            $test_book2->save();
-
-            $number_copies = 4;
-            $test_book->addCopy($number_copies);
-
-            //Act
-            $test_copy = $test_book->getCopy();
-            $result = Copy::getAll();
-
-
-            //Assert
-            $this->assertEquals([$test_copy], $result);
+            $this->assertEquals(2, $result);
         }
     }
 ?>

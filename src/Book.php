@@ -10,6 +10,11 @@
             $this->id = $id;
         }
 
+        function setTitle($new_title)
+        {
+            $this->title = $new_title;
+        }
+
         function getTitle()
         {
             return $this->title;
@@ -19,16 +24,20 @@
         {
             return $this->id;
         }
-
-        function setTitle($new_title)
-        {
-            $this->title = $new_title;
-        }
-
+        // search for existing book title. if exists, save new book with exixsing book id
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
-            $this->id = $GLOBALS['DB']->lastInsertId();
+            $exists = Book::findByTitle($this->getTitle());
+            if($exists == 0){
+                $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
+                $this->id = $GLOBALS['DB']->lastInsertId();
+                $GLOBALS['DB']->exec("INSERT INTO copies (available, book_id) VALUES (TRUE, {$this->getId()});");
+            }else{
+                $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
+                $this->id = $exists;
+                $GLOBALS['DB']->exec("INSERT INTO copies (available, book_id) VALUES (TRUE, {$exists});");
+            }
+
         }
 
         function updateTitle($new_title)
@@ -37,10 +46,10 @@
             $this->title = $new_title;
         }
 
-        function update($new_title)
-        {
-            $this->updateTitle($new_title);
-        }
+        // function update($new_title)
+        // {
+        //     $this->updateTitle($new_title);
+        // }
 
         function delete()
         {
@@ -66,6 +75,20 @@
             $GLOBALS['DB']->exec("DELETE FROM books;");
             $GLOBALS['DB']->exec("DELETE FROM books_authors;");
         }
+        // returns a found book id#
+        static function findByTitle($title_to_search)
+        {
+            $lower_search_title = strtolower($title_to_search);
+            $all_books = Book::getAll();
+            foreach($all_books as $book){
+                $title = strtolower($book->getTitle());
+                if($lower_search_title == $title){
+                    return $book->getId();
+                }else{
+                    return 0;
+                }
+            }
+        }
 
         static function find($search_id)
         {
@@ -87,11 +110,11 @@
 
         function getAuthors()
         {
-            $query = $GLOBALS['DB']->query("SELECT authors.* FROM
+            $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM
             books JOIN books_authors ON (books.id = books_authors.book_id)
                   JOIN authors ON (books_authors.author_id = authors.id)
             WHERE books.id = {$this->getId()};");
-            $returned_authors = $query->fetchAll(PDO::FETCH_ASSOC);
+            //$returned_authors = $query->fetchAll(PDO::FETCH_ASSOC);
 
             $authors = [];
             foreach($returned_authors as $author){
@@ -104,21 +127,22 @@
         }
 
         //inserts new copy record into the copies database
-        function addCopy($number_copies)
-        {
-            $GLOBALS['DB']->exec("INSERT INTO copies (number_copies, available, book_id) VALUES ({$number_copies}, {$number_copies}, {$this->getId()});");
-        }
+        // function addCopy($number_copies)
+        // {
+        //     $GLOBALS['DB']->exec("INSERT INTO copies (number_copies, available, book_id) VALUES ({$number_copies}, {$number_copies}, {$this->getId()});");
+        // }
 
-        function getCopy()
+        function getNumberOfCopies()
         {
-            $query = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id={$this->getId()};");
-            $returned_copy = $query->fetchAll(PDO::FETCH_ASSOC);
-            $number_copies = $returned_copy[0]['number_copies'];
-            $available = $returned_copy[0]['available'];
-            $book_id = $returned_copy[0]['book_id'];
-            $id = $returned_copy[0]['id'];
-            $copy = new Copy($number_copies, $available, $book_id, $id);
-            return $copy;
+            $returned_copies = ($GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id={$this->getId()};"));
+            $num_of_copies = 0;
+
+            //$returned_copy = $query->fetchAll(PDO::FETCH_ASSOC);
+            foreach($returned_copies as $copy){
+                ++$num_of_copies;
+            }
+
+            return $num_of_copies;
         }
     }
 ?>
