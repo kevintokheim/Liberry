@@ -275,7 +275,7 @@
             //Assert
             $this->assertEquals($test_book->getId(), $result);
         }
-///////////////// FIX //////////////////////
+///////////////// FIX(ED) //////////////////////
         function test_findByAuthor()
         {
             //Arrange

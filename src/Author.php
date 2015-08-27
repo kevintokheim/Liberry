@@ -27,8 +27,14 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO authors (name) VALUES ('{$this->getName()}');");
-            $this->id = $GLOBALS['DB']->lastInsertId();
+            $exists = Author::findByAuthorName($this->getName());
+            var_dump($this->getName());
+            var_dump($exists);
+            if($exists == 0 ){
+                $GLOBALS['DB']->exec("INSERT INTO authors (name) VALUES ('{$this->getName()}');");
+                $this->id = $GLOBALS['DB']->lastInsertId();
+                //var_dump($this->id);
+            }
         }
 
         function updateName($new_name)
@@ -103,6 +109,54 @@
             }
             return $books;
         }
+
+/////////////////////////////////////////////////////////////
+/////////////// Change to  name / book //////////////////////
+/////////////////////////////////////////////////////////////
+
+        // // return the Id# of found author
+        static function findByAuthorName($name_to_search)
+        {
+            $author_to_find = null;
+            $lower_search_name = strtolower($name_to_search);
+            $all_authors = Author::getAll();
+            //var_dump($all_authors);
+            foreach($all_authors as $author){
+                    //var_dump($author->getId());
+                $name = strtolower($author->getName());
+                //var_dump($name);
+                if($lower_search_name == $name){
+                    $author_to_find = $author->getId();
+                    return $author_to_find;
+                }
+            }
+        }
+        // //return
+        // static function findByBook($title_to_search)
+        // {
+        //     $lower_search_title = strtolower($title_to_search);
+        //     $found_books = [];
+        //     $all_books = Book::getAll();
+        //     foreach($all_books as $book){
+        //         $book_name = strtolower($book->getName());
+        //         // var_dump($book_name);
+        //         // var_dump($lower_search_book);
+        //         if($book_name == $lower_search_title){
+        //             $books_by_title = $book->getBooks();
+        //             //var_dump($books_by_title);
+        //             foreach($books_by_title as $book){
+        //                 array_push($found_books, $book);
+        //             }
+        //         }else{
+        //             return 0;
+        //         }
+        //
+        //     }
+        //     return $found_books;
+        // }
+
+
+
 
     }
 

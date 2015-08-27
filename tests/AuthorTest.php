@@ -70,6 +70,10 @@
             $test_author = new Author($name);
             $test_author->save();
 
+            $name2 = "Roberto Bolano";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
+
             //Act
             $result = Author::getAll();
 
@@ -85,7 +89,7 @@
             $test_author->save();
 
             $name2 = "Stephen King";
-            $test_author2 = new Author($name);
+            $test_author2 = new Author($name2);
             $test_author2->save();
 
             //Act
@@ -236,6 +240,51 @@
             //Assert
             $this->assertEquals([$test_book, $test_book2], $result);
         }
+        /////////////////////////////////////////////////////////////
+        /////////////// Change to  name / book //////////////////////
+        /////////////////////////////////////////////////////////////
+
+        // function test_findByBook()
+        // {
+        //     //Arrange
+        //     $title = "Adventures on Mars";
+        //     $test_book = new Book($title);
+        //     $test_book->save();
+        //
+        //     $title2 = "Mars";
+        //     $test_book2 = new Book($title);
+        //     $test_book->save();
+        //
+        //     // $title2 = "Mars";
+        //     // $test_book2 = new Book($title2);
+        //     // $test_book2->save();
+        //
+        //     //Act
+        //     $result = Book::findByBook("Adventures on Mars");
+        //
+        //     //Assert
+        //     $this->assertEquals($test_book->getId(), $result);
+        // }
+        function test_findByAuthorName()
+        {
+            //Arrange
+            $title = "Adventures on Mars";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $test_author->addBook($test_book);
+
+            //Act
+            $result = Author::findByAuthorName("David Foster Wallace");
+
+            //Assert
+            $this->assertEquals($test_author->getId(), $result);
+        }
+
 
     }
 

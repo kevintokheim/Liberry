@@ -1,5 +1,5 @@
 <?php
-    require_once "src/Author.php";
+    //require_once "src/Author.php";
     class Book
     {
         private $title;
@@ -29,12 +29,12 @@
         function save()
         {
             $exists = Book::findByTitle($this->getTitle());
-            if($exists == 0){
+
+            if($exists == null){
                 $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
                 $this->id = $GLOBALS['DB']->lastInsertId();
                 $GLOBALS['DB']->exec("INSERT INTO copies (available, book_id) VALUES (TRUE, {$this->getId()});");
             }else{
-                $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
                 $this->id = $exists;
                 $GLOBALS['DB']->exec("INSERT INTO copies (available, book_id) VALUES (TRUE, {$exists});");
             }
@@ -80,14 +80,14 @@
 
         static function findByTitle($title_to_search)
         {
+            $book_to_find = null;
             $lower_search_title = strtolower($title_to_search);
             $all_books = Book::getAll();
             foreach($all_books as $book){
                 $title = strtolower($book->getTitle());
                 if($lower_search_title == $title){
-                    return $book->getId();
-                }else{
-                    return 0;
+                    $book_to_find = $book->getId();
+                    return $book_to_find;
                 }
             }
         }
@@ -114,7 +114,6 @@
             }
             return $found_books;
         }
-
 
         static function find($search_id)
         {
