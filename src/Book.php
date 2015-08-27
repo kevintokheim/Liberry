@@ -1,4 +1,5 @@
 <?php
+    require_once "src/Author.php";
     class Book
     {
         private $title;
@@ -76,6 +77,7 @@
             $GLOBALS['DB']->exec("DELETE FROM books_authors;");
         }
         // returns a found book id#
+
         static function findByTitle($title_to_search)
         {
             $lower_search_title = strtolower($title_to_search);
@@ -89,6 +91,24 @@
                 }
             }
         }
+
+        static function findByAuthor($author_to_search)
+        {
+            $lower_search_author = strtolower($author_to_search);
+            $found_books = [];
+            $all_authors = Author::getAll();
+            foreach($all_authors as $author){
+                $author_name = strtolower($author->getName());
+                if($author_name == $lower_search_author){
+                    $found_books = $author->getBooks();
+                }else{
+                    return 0;
+                }
+
+            }
+            return $found_books;
+        }
+
 
         static function find($search_id)
         {
@@ -114,7 +134,6 @@
             books JOIN books_authors ON (books.id = books_authors.book_id)
                   JOIN authors ON (books_authors.author_id = authors.id)
             WHERE books.id = {$this->getId()};");
-            //$returned_authors = $query->fetchAll(PDO::FETCH_ASSOC);
 
             $authors = [];
             foreach($returned_authors as $author){
@@ -126,22 +145,13 @@
             return $authors;
         }
 
-        //inserts new copy record into the copies database
-        // function addCopy($number_copies)
-        // {
-        //     $GLOBALS['DB']->exec("INSERT INTO copies (number_copies, available, book_id) VALUES ({$number_copies}, {$number_copies}, {$this->getId()});");
-        // }
-
         function getNumberOfCopies()
         {
             $returned_copies = ($GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id={$this->getId()};"));
             $num_of_copies = 0;
-
-            //$returned_copy = $query->fetchAll(PDO::FETCH_ASSOC);
             foreach($returned_copies as $copy){
                 ++$num_of_copies;
             }
-
             return $num_of_copies;
         }
     }

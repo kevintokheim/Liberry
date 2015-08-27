@@ -256,5 +256,47 @@
             //Assert
             $this->assertEquals(2, $result);
         }
+
+        //////////////////////////////////////////////////////
+        function test_findByTitle()
+        {
+            //Arrange
+            $title = "Adventures on Mars";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $title2 = "Mars";
+            $test_book2 = new Book($title2);
+            $test_book2->save();
+
+            //Act
+            $result = Book::findByTitle("Adventures on Mars");
+
+            //Assert
+            $this->assertEquals($test_book->getId(), $result);
+        }
+///////////////// FIX //////////////////////
+        function test_findByAuthor()
+        {
+            //Arrange
+            $title = "Adventures on Mars";
+            $test_book = new Book($title);
+            $test_book->save();
+
+            $name = "David Foster Wallace";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            //Act
+            $result = Book::findByAuthor("David Foster Wallace");
+
+            //Assert
+            $this->assertEquals($test_book->getId(), $result);
+        }
+
+
+
+
+
     }
 ?>
