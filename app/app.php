@@ -73,6 +73,14 @@
             return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $book_authors));
         });
 
+        $app->get("/search_book", function() use ($app){
+            $title = $_GET['title'];
+            $found_book_id = Book::findByTitle($title);
+            $found_book = Book::find($found_book_id);
+            $book_authors = $found_book->getAuthors();
+            return $app['twig']->render("book.html.twig", array( 'book' => $found_book, 'authors' => $book_authors));
+        });
+
 
 
     return $app;
