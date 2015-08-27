@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>Catalogue</title>
+    <link href="css/custom.css" rel='stylesheet' type="text/css">
+    <link href="../../css/custom.css" rel='stylesheet' type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+</head>
+    <body>
+        <div class="container">
+
+            <h1><center>Library Book Catalogue</center></h1>
+
+            <div class="col-xs-8">
+                <h3>Book List</h3>
+                {% if books is not empty %}
+                    <ul>
+                    {% for book in books %}
+                        <li><a href="/book/{{ book.getId }}">{{ book.getTitle}}</a></li>
+
+                        {% set book_author = book.getAuthors %}
+                        <ul>
+                            {% for author in book_author %}
+                                <li>{{ author.getName }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                    </ul>
+
+                {% else %}
+                    <p>The book catalogue is empty.</p>
+                {% endif %}
+                <h3>Add A Book</h3>
+                <form action="/book_added" method="post">
+                    <div class="form-group">
+                        <label for="title">Book Title</label>
+                        <input class="form-control" id="title" name="title" type="text" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Author</label>
+                        <input class="form-control" id="name" name="name" type="text" required>
+                    </div>
+                        <button type="submit" class="btn-md">Add</button>
+
+                </form>
+
+                <h3>Search For a Book</h3>
+                <form action="/search_book">
+                    <div class="form-group">
+                        <label for="title">Search by book title</label>
+                        <input class="form-control" id="title" name="title" type="text" autofocus>
+                    </div>
+                    <button type="submit" class="btn-md">Search</button>
+                </form>
+
+                <form action="/search_author">
+                    <div class="form-group">
+                        <label for="name">Search by author</label>
+                        <input class="form-control" id="name" name="name" type="text" autofocus>
+                    </div>
+                    <button type="submit" class="btn-md">Search</button>
+                </form>
+            </div>
+
+
+<!--======================================================-->
+
+
+
+            <div class="col-xs-4">
+                <br>
+                <form action="/" method="get">
+                    <button type="submit" class="btn-lg" style="background-color:white; width:250px">HOME</button>
+                </form>
+                <form action="/main_admin" method="get">
+                    <button type="submit" class="btn-lg btn-danger" style="width:250px">Librarian Log-in</button>
+                </form>
+                <form action="/courses" method="get">
+                    <button type="submit" class="btn-lg btn-primary" style="width:250px">Find a Book!</button>
+                </form>
+            </div>
+
+
+    </body>
+</html>
